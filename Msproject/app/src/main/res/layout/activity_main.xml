@@ -18,8 +18,11 @@
         android:id="@+id/remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
         android:text="알림 제거"
-        tools:layout_editor_absoluteX="-3dp"
-        tools:layout_editor_absoluteY="75dp" />
+        app:layout_constraintEnd_toEndOf="@+id/create"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
