@@ -39,8 +39,7 @@ class MainActivity : AppCompatActivity()  {
             }
         })
     }
-    //123213213213214124123
-    //12312521153326234234324
+    //git 테스트
 
     fun createNotification(){
         val builder : NotificationCompat.Builder = NotificationCompat.Builder(this,"default")
