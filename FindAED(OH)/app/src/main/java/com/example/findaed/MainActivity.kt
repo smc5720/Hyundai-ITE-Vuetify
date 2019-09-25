@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback  {
     fun createNotification(){
         //object builder<NotificationCompat.Builder>=NotificationCompat.Builder(this,"default")
         val builder : NotificationCompat.Builder = NotificationCompat.Builder(this,"default")
-        builder.setSmallIcon(R.mipmap.ic_launcher) //아이곤
+        builder.setSmallIcon(R.mipmap.ic_launcher) //아이콘
         builder.setContentTitle("현재 위치로부터 약 100m지점에서 심정지 환자 발생") //세부제목
         builder.setContentText("항공대학로 76 앞 지원 가능 할 경우 지원 바람") //세부내용
         builder.setColor(Color.RED) //알림 색깔?
