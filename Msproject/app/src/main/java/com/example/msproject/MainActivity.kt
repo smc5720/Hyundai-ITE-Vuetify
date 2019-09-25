@@ -39,9 +39,10 @@ class MainActivity : AppCompatActivity()  {
             }
         })
     }
+    //123213213213214124123
+    //12312521153326234234324
 
     fun createNotification(){
-        //object builder<NotificationCompat.Builder>=NotificationCompat.Builder(this,"default")
         val builder : NotificationCompat.Builder = NotificationCompat.Builder(this,"default")
         builder.setSmallIcon(R.mipmap.ic_launcher) //아이곤
         builder.setContentTitle("제목") //세부제목
