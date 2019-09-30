@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "23839557592",
+    "firebase_url": "https://fir-noti-be465.firebaseio.com",
+    "project_id": "fir-noti-be465",
+    "storage_bucket": "fir-noti-be465.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23839557592:android:24636ef8d2348463bc54ad",
+        "android_client_info": {
+          "package_name": "com.example.firebase_noti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23839557592-vdi6reqfhs4m28ic2ucgv93836it18ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_noti",
+            "certificate_hash": "cc22e342719a883373b445e4857ccf1f22aeb1ba"
+          }
+        },
+        {
+          "client_id": "23839557592-o961commkmo6u8amrbc911adnlb3jcf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtIK7zbhwksmn2QEnyeSzbF3CpPYEFOac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23839557592-o961commkmo6u8amrbc911adnlb3jcf9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
