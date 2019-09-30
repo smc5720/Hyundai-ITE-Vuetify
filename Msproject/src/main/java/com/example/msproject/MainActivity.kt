@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity()  {
             }
         })
     }
-    //git 테스트
 
     fun createNotification(){
+        //object builder<NotificationCompat.Builder>=NotificationCompat.Builder(this,"default")
         val builder : NotificationCompat.Builder = NotificationCompat.Builder(this,"default")
         builder.setSmallIcon(R.mipmap.ic_launcher) //아이곤
         builder.setContentTitle("제목") //세부제목
