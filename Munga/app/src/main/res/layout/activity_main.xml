@@ -66,16 +66,28 @@
         android:id="@+id/buttonSend"
         android:layout_width="166dp"
         android:layout_height="56dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="160dp"
         android:text="@string/buoonSend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSMS"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/buttonCall"
+        android:layout_width="166dp"
+        android:layout_height="56dp"
+        android:text="전화걸기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toEndOf="@+id/buttonSend"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSMS"
+        app:layout_constraintVertical_bias="0.61" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
