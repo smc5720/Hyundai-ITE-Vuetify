@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/aed_home"
-        android:name="com.example.searchaed.ui.home.HomeFragment"
+        android:name="kau.msproject.searchaed.ui.home.HomeFragment"
         android:label="AED위치 찾기"
         tools:layout="@layout/home_fragment" />
 
     <fragment
         android:id="@+id/aed_youtube"
-        android:name="com.example.searchaed.ui.youtube.YoutubeFragment"
+        android:name="kau.msproject.searchaed.ui.youtube.YoutubeFragment"
         android:label="심폐소생술 방법(CPR)"
         tools:layout="@layout/youtube_fragment"/>
 

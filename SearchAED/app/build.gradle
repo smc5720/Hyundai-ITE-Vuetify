@@ -8,12 +8,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.example.searchaed"
+        applicationId "kau.msproject.searchaed"
         minSdkVersion 29
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.ext.junit.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

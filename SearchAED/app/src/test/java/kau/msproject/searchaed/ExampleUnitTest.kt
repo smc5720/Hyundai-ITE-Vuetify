@@ -1,4 +1,4 @@
-package com.example.searchaed
+package kau.msproject.searchaed
 
 import org.junit.Test
 

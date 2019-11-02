@@ -1,4 +1,4 @@
-package com.example.searchaed.ui.youtube
+package kau.msproject.searchaed.ui.youtube
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

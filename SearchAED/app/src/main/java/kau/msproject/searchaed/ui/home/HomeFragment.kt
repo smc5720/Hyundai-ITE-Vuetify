@@ -1,4 +1,4 @@
-package com.example.searchaed.ui.home
+package kau.msproject.searchaed.ui.home
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.searchaed.MainActivity
 
-import com.example.searchaed.R
+import kau.msproject.searchaed.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -38,7 +35,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
         mapFragment.getMapAsync(this)
         locationSource =
-            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+            FusedLocationSource(this,
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
 
         //callMapAPI()
 
@@ -57,7 +56,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
         mapFragment.getMapAsync(this)
         locationSource =
-            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+            FusedLocationSource(this,
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
         //여기까지 민철이
     }
 

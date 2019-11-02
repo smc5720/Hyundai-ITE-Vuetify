@@ -1,4 +1,4 @@
-package com.example.searchaed.ui.home
+package kau.msproject.searchaed.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
