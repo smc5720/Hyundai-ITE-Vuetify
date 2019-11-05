@@ -47,12 +47,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
             PackageManager.PERMISSION_GRANTED
         )
+
         NaverMapSdk.getInstance(this).client =
             NaverMapSdk.NaverCloudPlatformClient("hz815ddbrf")
 
@@ -105,13 +108,13 @@ class MainActivity : AppCompatActivity() {
             ), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-
     }
+
     //전화
     fun requestionPermission(){
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE),REQUEST_CALL)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)

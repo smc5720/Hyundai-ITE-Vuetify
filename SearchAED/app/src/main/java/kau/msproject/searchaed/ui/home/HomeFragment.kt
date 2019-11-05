@@ -2,24 +2,32 @@ package kau.msproject.searchaed.ui.home
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.firebase.database.*
 
 import kau.msproject.searchaed.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import kau.msproject.searchaed.MainActivity
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
+
+    val dataOfAED = arrayOfNulls<Map<String, Object>>(100)
+
     var checkState: Boolean = false
 
     override fun onCreateView(
@@ -28,24 +36,38 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
 
-        val fm = childFragmentManager
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
-            ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(R.id.map, it).commit()
-            }
-        mapFragment.getMapAsync(this)
-        locationSource =
-            FusedLocationSource(this,
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
+        setRealtimeDatabase()
 
-        //callMapAPI()
+        callMapAPI()
 
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.home_fragment, container, false)
 
         return root
+    }
+
+    fun setRealtimeDatabase() {
+        // Realtime-Database에 message 태그 생성 후 "Hello, World!" 추가
+        var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        var databaseReference: DatabaseReference = database.getReference("records")
+        // databaseReference.setValue("Hello, World!")
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val value = dataSnapshot.getValue() as ArrayList<String>
+
+                for (i in 0 until 100) {
+                    dataOfAED[i] = value.get(i) as Map<String, Object>
+                }
+
+                Log.d("DataBase", "Value is: ${dataOfAED[1]!!.get("buildAddress")}")
+                // 정보를 위의 반복문에서 넣기 때문에 Null로 연산될 일이 없다.
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("ERROR", "Failed to read value.", error.toException())
+            }
+        })
     }
 
     fun callMapAPI() {
@@ -75,20 +97,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
+
         val uiSettings = naverMap.uiSettings
-        uiSettings.isLocationButtonEnabled = true
-
-        naverMap.locationSource = locationSource
-
-        naverMap.setOnMapClickListener { point, coord ->
-            Toast.makeText(activity, "${coord.latitude}, ${coord.longitude}",
-                Toast.LENGTH_SHORT).show()
-
-            val marker = Marker()
-            marker.position = LatLng(coord.latitude.toDouble(), coord.longitude.toDouble())
-            marker.map = naverMap
-        }
-        /*val uiSettings = naverMap.uiSettings
         val marker = arrayOfNulls<Marker>(100)
 
         for (i in 0 until 100) {
@@ -97,7 +107,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         // 정보창의 내용을 지정한다.
         val infoWindow = InfoWindow()
-        infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this) {
+        infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(MainActivity.applicationContext()) {
             override fun getText(infoWindow: InfoWindow): CharSequence {
                 var idx: Int = infoWindow.marker?.tag as Int
                 return "주소: ${dataOfAED[idx]!!.get("buildAddress")}\n" +
@@ -137,12 +147,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         // 맵을 클릭했을 때 불린다.
         naverMap.setOnMapClickListener { point, coord ->
+            /*
             Toast.makeText(
-                activity, "${coord.latitude}, ${coord.longitude}",
+                this, "${coord.latitude}, ${coord.longitude}",
                 Toast.LENGTH_SHORT
             ).show()
-
-            /*
             marker.position = LatLng(coord.latitude.toDouble(), coord.longitude.toDouble())
             marker.map = naverMap
             */
@@ -164,7 +173,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             // 맵을 클릭하면 정보창을 닫는다.
             infoWindow.close()
-        }*/
+        }
     }
 
     companion object {
