@@ -1,5 +1,6 @@
 package kau.msproject.searchaed.ui.home
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,8 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import kau.msproject.searchaed.AedInfo
+import kau.msproject.searchaed.AedInfoActivity
 import kau.msproject.searchaed.MainActivity
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -27,6 +30,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
 
     val dataOfAED = arrayOfNulls<Map<String, Object>>(100)
+    val infoOfAED = arrayOfNulls<AedInfo>(100) // intent로 넘겨주기 위해 설정
 
     var checkState: Boolean = false
 
@@ -54,10 +58,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         // databaseReference.setValue("Hello, World!")
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue() as ArrayList<String>
+                val value = dataSnapshot.value as ArrayList<String>
 
                 for (i in 0 until 100) {
                     dataOfAED[i] = value.get(i) as Map<String, Object>
+                    infoOfAED[i] = AedInfo(dataOfAED[i]!!.get("buildAddress").toString(),
+                        dataOfAED[i]!!.get("zipcode1").toString(),
+                        dataOfAED[i]!!.get("zipcode2").toString(),
+                        dataOfAED[i]!!.get("org").toString(),
+                        dataOfAED[i]!!.get("clerkTel").toString(),
+                        dataOfAED[i]!!.get("buildPlace").toString(),
+                        dataOfAED[i]!!.get("manager").toString(),
+                        dataOfAED[i]!!.get("managerTel").toString(),
+                        dataOfAED[i]!!.get("model").toString()
+                        )
                 }
 
                 Log.d("DataBase", "Value is: ${dataOfAED[1]!!.get("buildAddress")}")
@@ -133,11 +147,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 infoWindow.close()
             }
 
+            var idx: Int = infoWindow.marker?.tag as Int ?: 0
+            val aedIntent = Intent(activity, AedInfoActivity::class.java)
+            aedIntent.putExtra("AED", infoOfAED[idx])
+            //클릭해야 idx가 생성이기 때문에 null발생 불가
+            startActivityForResult(aedIntent,1)
+
             true
         }
-
-        // 마커의 위치에 정보창을 띄운다.
-        //infoWindow.open(marker)
 
         // 현 위치 버튼 활성화
         uiSettings.isLocationButtonEnabled = true
