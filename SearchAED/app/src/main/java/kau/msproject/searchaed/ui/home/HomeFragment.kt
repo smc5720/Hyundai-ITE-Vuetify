@@ -147,7 +147,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 infoWindow.close()
             }
 
-            var idx: Int = infoWindow.marker?.tag as Int ?: 0
+            var idx: Int = infoWindow.marker?.tag as Int
             val aedIntent = Intent(activity, AedInfoActivity::class.java)
             aedIntent.putExtra("AED", infoOfAED[idx])
             //클릭해야 idx가 생성이기 때문에 null발생 불가
