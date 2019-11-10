@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import kau.msproject.searchaed.ui.emergency.FirstFragment
 import kau.msproject.searchaed.ui.emergency.SecondFragment
+import kau.msproject.searchaed.ui.emergency.ThirdFragment
 
 class EmergencyActivity : AppCompatActivity() {
 
@@ -27,8 +28,11 @@ class EmergencyActivity : AppCompatActivity() {
                 replaceFragment(SecondFragment.newInstance())
                 frCount++
             }else if(frCount == 1){
+                replaceFragment(ThirdFragment.newInstance())
+                frCount++
+            }else if(frCount == 2){
                 replaceFragment(FirstFragment.newInstance())
-                frCount--
+                frCount = 0
             }
         }
     }
