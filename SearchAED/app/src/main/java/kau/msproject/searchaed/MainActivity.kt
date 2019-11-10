@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.NaverMapSdk
 import com.naver.maps.map.util.FusedLocationSource
+import kau.msproject.searchaed.ui.home.HomeFragment
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(itentCall)
             }
         }
+
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)

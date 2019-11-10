@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.database.*
 
-import kau.msproject.searchaed.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
@@ -20,9 +20,8 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
-import kau.msproject.searchaed.AedInfo
-import kau.msproject.searchaed.AedInfoActivity
-import kau.msproject.searchaed.MainActivity
+import kau.msproject.searchaed.*
+import kau.msproject.searchaed.R
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
@@ -47,6 +46,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.home_fragment, container, false)
+        //응급상황발생 버튼
+        val emergencyButton = root.findViewById<Button>(R.id.btn_emergency)
+        emergencyButton.setOnClickListener(){
+            val emergencyIntent = Intent(activity, EmergencyActivity::class.java)
+            emergencyIntent.putExtra("AED", infoOfAED[1])
+            startActivity(emergencyIntent)
+        }
 
         return root
     }
@@ -192,6 +198,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             infoWindow.close()
         }
     }
+
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
