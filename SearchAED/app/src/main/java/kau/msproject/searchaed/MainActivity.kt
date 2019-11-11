@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            val phoneNo: String = "119" //119번호
+            val phoneNo: String = "01063385720" //119번호
             val sms: String = "현재 ___위치에 긴급 환자가 발생 했습니다. 도움 요청 부탁드립니다!!"   //문자내용
             try {
                 var smsManager = SmsManager.getDefault()
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         val buttonCall = findViewById<Button>(R.id.buttonCall)
         buttonCall.setOnClickListener {
             val itentCall : Intent = Intent(Intent.ACTION_CALL)
-            val phoneNo: String = "010-1234-5678" //건물번호
+            val phoneNo: String = "01063385720" //건물번호
             Toast.makeText(this,"Please Enter Your Number123",Toast.LENGTH_SHORT)
             if(phoneNo.trim().isEmpty()){
                 Toast.makeText(this,"Please Enter Your Number",Toast.LENGTH_SHORT)

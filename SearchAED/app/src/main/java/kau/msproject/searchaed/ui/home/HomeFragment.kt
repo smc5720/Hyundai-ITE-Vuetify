@@ -13,9 +13,8 @@ import android.widget.Toast
 import com.google.firebase.database.*
 
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.geometry.LatLngBounds
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
@@ -25,11 +24,17 @@ import kau.msproject.searchaed.R
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
+    val dataNum:Int = 100;
+
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
 
-    val dataOfAED = arrayOfNulls<Map<String, Object>>(100)
-    val infoOfAED = arrayOfNulls<AedInfo>(100) // intent로 넘겨주기 위해 설정
+    val dataOfAED = arrayOfNulls<Map<String, Object>>(dataNum)
+    val infoOfAED = arrayOfNulls<AedInfo>(dataNum) // intent로 넘겨주기 위해 설정
+
+    // 카메라 무빙
+    var cameraLat:Double = 37.5666102
+    var cameraLon:Double = 126.9783881
 
     var checkState: Boolean = false
 
@@ -54,6 +59,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             startActivity(emergencyIntent)
         }
 
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+
         return root
     }
 
@@ -66,7 +73,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val value = dataSnapshot.value as ArrayList<String>
 
-                for (i in 0 until 100) {
+                for (i in 0 until dataNum) {
                     dataOfAED[i] = value.get(i) as Map<String, Object>
                     infoOfAED[i] = AedInfo(dataOfAED[i]!!.get("buildAddress").toString(),
                         dataOfAED[i]!!.get("zipcode1").toString(),
@@ -79,8 +86,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         dataOfAED[i]!!.get("model").toString()
                         )
                 }
-
-                Log.d("DataBase", "Value is: ${dataOfAED[1]!!.get("buildAddress")}")
                 // 정보를 위의 반복문에서 넣기 때문에 Null로 연산될 일이 없다.
             }
 
@@ -97,10 +102,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
         mapFragment.getMapAsync(this)
-        locationSource =
-            FusedLocationSource(this,
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
         //여기까지 민철이
     }
 
@@ -118,10 +119,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val uiSettings = naverMap.uiSettings
-        val marker = arrayOfNulls<Marker>(100)
+        // 최소 및 최대 줌 레벨 설정
+        naverMap.minZoom = 5.0
+        naverMap.maxZoom = 18.0
 
-        for (i in 0 until 100) {
+        // 카메라의 대상 지점을 한반도 인근으로 제한
+        naverMap.extent = LatLngBounds(LatLng(31.43, 122.37), LatLng(44.35, 132.0))
+
+        // 실시간 교통정보
+        naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_TRAFFIC, true)
+
+        // uiSetting: 현 위치 버튼 활성화
+        val uiSettings = naverMap.uiSettings
+        val marker = arrayOfNulls<Marker>(dataNum)
+
+        for (i in 0 until dataNum) {
             marker[i] = Marker()
         }
 
@@ -145,6 +157,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val listener = Overlay.OnClickListener { overlay ->
             val marker = overlay as Marker
 
+            cameraLat = marker.position.latitude
+            cameraLon = marker.position.longitude
+
+            // 카메라 무빙
+            var cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(cameraLat, cameraLon), 15.0).animate(CameraAnimation.Easing, 500)
+            naverMap.moveCamera(cameraUpdate)
+
             if (marker.infoWindow == null) {
                 // 현재 마커에 정보 창이 열려있지 않을 경우 엶
                 infoWindow.open(marker)
@@ -164,22 +183,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         // 현 위치 버튼 활성화
         uiSettings.isLocationButtonEnabled = true
+        uiSettings.isCompassEnabled = false
 
         // '현 위치 관련 기능 (FusedLocationSource)' 사용
         naverMap.locationSource = locationSource
 
         // 맵을 클릭했을 때 불린다.
         naverMap.setOnMapClickListener { point, coord ->
-            /*
-            Toast.makeText(
-                this, "${coord.latitude}, ${coord.longitude}",
-                Toast.LENGTH_SHORT
-            ).show()
-            marker.position = LatLng(coord.latitude.toDouble(), coord.longitude.toDouble())
-            marker.map = naverMap
-            */
+
             if (checkState == false) {
-                for (i in 0 until 100) {
+                for (i in 0 until dataNum) {
                     if (dataOfAED[i] != null) {
                         val wgs84Lat: Double = (dataOfAED[i]!!.get("wgs84Lat") as String).toDouble()
                         val wgs84Lon: Double = (dataOfAED[i]!!.get("wgs84Lon") as String).toDouble()
@@ -194,11 +207,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 checkState = true
             }
 
+            // 위치가 변경될 때마다 호출된다.
+            naverMap.addOnLocationChangeListener { location ->
+                Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}",
+                    Toast.LENGTH_SHORT).show()
+            }
+
             // 맵을 클릭하면 정보창을 닫는다.
             infoWindow.close()
         }
     }
-
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
