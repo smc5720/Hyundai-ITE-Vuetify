@@ -24,6 +24,7 @@ import kau.msproject.searchaed.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.naver.maps.map.NaverMapSdk
 import com.naver.maps.map.util.FusedLocationSource
 import kau.msproject.searchaed.ui.home.HomeFragment
@@ -51,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        //데이터베이스 메세지 저장
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("현재위치")
+        myRef.setValue("민철이집입니당")
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
