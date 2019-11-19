@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
 
@@ -28,7 +29,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
-
+    private lateinit var root : View
     val dataOfAED = arrayOfNulls<Map<String, Object>>(dataNum)
     val infoOfAED = arrayOfNulls<AedInfo>(dataNum) // intent로 넘겨주기 위해 설정
 
@@ -50,11 +51,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.home_fragment, container, false)
+        root = inflater.inflate(R.layout.home_fragment, container, false)
         //응급상황발생 버튼
         val emergencyButton = root.findViewById<Button>(R.id.btn_emergency)
         emergencyButton.setOnClickListener(){
             val emergencyIntent = Intent(activity, EmergencyActivity::class.java)
+            emergencyIntent.putExtra("AED", infoOfAED[1])
+            startActivity(emergencyIntent)
+        }
+
+        val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
+        emergencyButton2.setOnClickListener(){
+            val emergencyIntent = Intent(activity,EmergencyActivity2::class.java)
             emergencyIntent.putExtra("AED", infoOfAED[1])
             startActivity(emergencyIntent)
         }
@@ -172,11 +180,32 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 infoWindow.close()
             }
 
-            var idx: Int = infoWindow.marker?.tag as Int
-            val aedIntent = Intent(activity, AedInfoActivity::class.java)
+            var idx: Int = marker.tag as Int
+
+            var textBuildAddress : TextView = root.findViewById(R.id.textBuildAddress)
+            var textZipCode1 : TextView = root.findViewById(R.id.textZipcode1)
+            var textZipCode2 : TextView = root.findViewById(R.id.textZipcode2)
+            var textOrg : TextView = root.findViewById(R.id.textOrg)
+            var textClerkTel : TextView = root.findViewById(R.id.textClerkTel)
+            var textBuildPlace : TextView = root.findViewById(R.id.textBuildPlace)
+            var textManager : TextView = root.findViewById(R.id.textManager)
+            var textManagerTel : TextView = root.findViewById(R.id.textManagerTel)
+            var textModel : TextView = root.findViewById(R.id.textModel)
+
+            textBuildAddress.text = infoOfAED[idx]!!.buildAddress
+            textZipCode1.text = infoOfAED[idx]!!.zipCode1
+            textZipCode2.text = infoOfAED[idx]!!.zipCode2
+            textOrg.text = infoOfAED[idx]!!.org
+            textClerkTel.text = infoOfAED[idx]!!.clerkTel
+            textBuildPlace.text = infoOfAED[idx]!!.buildPlace
+            textManager.text = infoOfAED[idx]!!.manager
+            textManagerTel.text = infoOfAED[idx]!!.managerTel
+            textModel.text = infoOfAED[idx]!!.model
+
+            /*val aedIntent = Intent(activity, AedInfoActivity::class.java)
             aedIntent.putExtra("AED", infoOfAED[idx])
             //클릭해야 idx가 생성이기 때문에 null발생 불가
-            startActivityForResult(aedIntent,1)
+            startActivityForResult(aedIntent,1)*/ //액티비티로 넘기지 않고 밑에 화면으로 불러올것임.(팝업으로 띄우는거 삭제해야함)
 
             true
         }
