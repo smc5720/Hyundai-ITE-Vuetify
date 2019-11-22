@@ -34,8 +34,8 @@ class EmergencyActivity2 : AppCompatActivity() {
                 frCount++
             }
             else if(frCount == 3){
-                replaceFragment(FirstFragment.newInstance())
-                frCount = 0
+                //replaceFragment(FirstFragment.newInstance())
+                //frCount = 0
             }
         }
         val btnClose : Button = findViewById(R.id.btn_close)

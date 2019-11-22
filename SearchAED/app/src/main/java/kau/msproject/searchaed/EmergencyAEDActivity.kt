@@ -42,8 +42,8 @@ class EmergencyAEDActivity : AppCompatActivity() {
                 frCount = 5
             }
             else if(frCount == 5){
-                replaceFragment(AedFirstFragment.newInstance())
-                frCount = 0
+                //replaceFragment(AedFirstFragment.newInstance())
+                //frCount = 0
             }
         }
     }

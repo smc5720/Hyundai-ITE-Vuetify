@@ -42,8 +42,8 @@ class EmergencyCPRActivity : AppCompatActivity() {
                 frCount = 5
             }
             else if(frCount == 5){
-                replaceFragment(CprFirstFragment.newInstance())
-                frCount = 0
+                //replaceFragment(CprFirstFragment.newInstance())
+                //frCount = 0
             }
         }
     }
