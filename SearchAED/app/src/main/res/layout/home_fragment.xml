@@ -1,21 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/map"
+        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.naver.maps.map.MapFragment"/>
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_emergency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="응급상황 발생"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintStart_toStartOf="@+id/map" />
+        android:id="@+id/btn_emergency2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="#00000000"
+        android:drawableRight="@drawable/help_button"
+        android:fontFamily="@font/jalnan"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/textOrg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jalnan"
+            android:text="AED를 클릭해주세요"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/textBuildAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jalnan"
+            android:text="주소" />
+
+        <TextView
+            android:id="@+id/textBuildPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jalnan"
+            android:text="상세위치"
+            android:textColor="#4444ff"
+            android:textSize="18dp" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_call_place"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00000000"
+                android:drawableLeft="@drawable/phone_call2" />
+            <androidx.legacy.widget.Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/textClerkTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jalnan"
+                android:text="건물 전화번호"
+                android:textColor="#000000"
+                android:textSize="18dp"/>
+        </LinearLayout>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_call_manager"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00000000"
+                android:drawableLeft="@drawable/phone_call2" />
+            <androidx.legacy.widget.Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/textManagerTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jalnan"
+                android:text="관리자 전화번호"
+                android:textColor="#000000"
+                android:textSize="18dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

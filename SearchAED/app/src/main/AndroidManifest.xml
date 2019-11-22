@@ -17,10 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmergencyActivity"></activity>
+        <activity android:name=".EmergencyAEDActivity"
+            android:theme="@style/Theme.MyDialog"/>
+        <activity android:name=".EmergencyCPRActivity"
+            android:theme="@style/Theme.MyDialog"/>
+        <activity android:name=".EmergencyActivity" />
         <activity
-            android:name=".AedInfoActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:name=".EmergencyActivity2"
+            android:theme="@style/Theme.MyDialog" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -30,11 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name="MyFirebaseMessagingService">
 
+        <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>

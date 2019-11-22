@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jalnan"
+        android:gravity="center"
+        android:text="도움 요청"
+        android:textSize="50dp"
+        android:textColor="#DD0000"
+        />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jalnan"
+        android:gravity="center"
+        android:text="사람들에게 도움 요청\n신호를 보냅니다."
+        android:textSize="25dp"
+        android:textColor="#000000"
+        />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/here_icon"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="3rdFragment" />
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jalnan"
+        android:gravity="center"
+        android:text="현재 위치를 공유합니다."
+        android:textSize="20dp"
+        />
 
-</FrameLayout>
+</LinearLayout>

@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //전화버튼
-        val buttonCall = findViewById<Button>(R.id.buttonCall)
+        /*val buttonCall = findViewById<Button>(R.id.buttonCall)
         buttonCall.setOnClickListener {
             val itentCall : Intent = Intent(Intent.ACTION_CALL)
             val phoneNo: String = "01063385720" //건물번호
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             }else{
                 startActivity(itentCall)
             }
-        }
+        }*/
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

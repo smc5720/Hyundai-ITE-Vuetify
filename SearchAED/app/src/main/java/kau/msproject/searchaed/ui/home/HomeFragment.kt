@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
 
@@ -28,7 +29,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
-
+    private lateinit var root : View
     val dataOfAED = arrayOfNulls<Map<String, Object>>(dataNum)
     val infoOfAED = arrayOfNulls<AedInfo>(dataNum) // intent로 넘겨주기 위해 설정
 
@@ -50,11 +51,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.home_fragment, container, false)
+        root = inflater.inflate(R.layout.home_fragment, container, false)
         //응급상황발생 버튼
-        val emergencyButton = root.findViewById<Button>(R.id.btn_emergency)
-        emergencyButton.setOnClickListener(){
-            val emergencyIntent = Intent(activity, EmergencyActivity::class.java)
+
+        val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
+        emergencyButton2.setOnClickListener(){
+            val emergencyIntent = Intent(activity,EmergencyActivity2::class.java)
             emergencyIntent.putExtra("AED", infoOfAED[1])
             startActivity(emergencyIntent)
         }
@@ -138,7 +140,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
         // 정보창의 내용을 지정한다.
-        val infoWindow = InfoWindow()
+        /*val infoWindow = InfoWindow()
         infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(MainActivity.applicationContext()) {
             override fun getText(infoWindow: InfoWindow): CharSequence {
                 var idx: Int = infoWindow.marker?.tag as Int
@@ -151,7 +153,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         "담당자 번호: ${dataOfAED[idx]!!.get("managerTel")}\n" +
                         "AED 모델: ${dataOfAED[idx]!!.get("model")}"
             }
-        }
+        }*/
 
         // 마커 클릭 시 호출되는 리스너
         val listener = Overlay.OnClickListener { overlay ->
@@ -164,19 +166,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             var cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(cameraLat, cameraLon), 15.0).animate(CameraAnimation.Easing, 500)
             naverMap.moveCamera(cameraUpdate)
 
-            if (marker.infoWindow == null) {
+            /*if (marker.infoWindow == null) {
                 // 현재 마커에 정보 창이 열려있지 않을 경우 엶
                 infoWindow.open(marker)
             } else {
                 // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
                 infoWindow.close()
-            }
+            }*/
 
-            var idx: Int = infoWindow.marker?.tag as Int
-            val aedIntent = Intent(activity, AedInfoActivity::class.java)
-            aedIntent.putExtra("AED", infoOfAED[idx])
-            //클릭해야 idx가 생성이기 때문에 null발생 불가
-            startActivityForResult(aedIntent,1)
+            var idx: Int = marker.tag as Int
+
+            var textBuildAddress : TextView = root.findViewById(R.id.textBuildAddress)
+            var textOrg : TextView = root.findViewById(R.id.textOrg)
+            var textClerkTel : TextView = root.findViewById(R.id.textClerkTel)
+            var textBuildPlace : TextView = root.findViewById(R.id.textBuildPlace)
+            var textManagerTel : TextView = root.findViewById(R.id.textManagerTel)
+
+
+            textBuildAddress.text = infoOfAED[idx]!!.buildAddress
+            textOrg.text = infoOfAED[idx]!!.org
+            textClerkTel.text = infoOfAED[idx]!!.clerkTel
+            textBuildPlace.text = infoOfAED[idx]!!.buildPlace
+            textManagerTel.text = infoOfAED[idx]!!.managerTel
 
             true
         }
@@ -214,7 +225,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
 
             // 맵을 클릭하면 정보창을 닫는다.
-            infoWindow.close()
+            //infoWindow.close()
         }
     }
 
