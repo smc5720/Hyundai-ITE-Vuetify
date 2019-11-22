@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.emergency.FourthFragment"
+    android:orientation="vertical">
+
+    <androidx.legacy.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <Button
+        android:id="@+id/btn_cpr"
+        android:layout_width="330dp"
+        android:layout_height="175dp"
+        android:background="#00000000"
+        android:drawableRight="@drawable/cpr_button"
+        android:layout_gravity="center"
+        />
+
+    <androidx.legacy.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <Button
+        android:id="@+id/btn_aed"
+        android:layout_width="330dp"
+        android:layout_height="175dp"
+        android:background="#00000000"
+        android:drawableRight="@drawable/aed_button"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>

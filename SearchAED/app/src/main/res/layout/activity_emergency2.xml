@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
-    android:layout_height="600dp"
+    android:layout_width="360dp"
+    android:layout_height="450dp"
     tools:context=".EmergencyActivity2"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/emergency_fragment"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="380dp"
         />
 
     <LinearLayout
@@ -26,18 +26,20 @@
 
         <Button
             android:id="@+id/btn_nextf"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="78dp"
+            android:layout_height="50dp"
             android:drawableLeft="@drawable/cont_button"
             android:background="#00000000"
              />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5" />
 
         <Button
             android:id="@+id/btn_close"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="78dp"
+            android:layout_height="50dp"
             android:drawableRight="@drawable/cancel_button"
             android:background="#00000000"
              />
@@ -51,7 +53,7 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="20dp"
         />
 
 </LinearLayout>

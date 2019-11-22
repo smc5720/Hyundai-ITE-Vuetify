@@ -1,4 +1,4 @@
-package kau.msproject.searchaed.ui.emergency
+package kau.msproject.searchaed.ui.emergencyAED
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kau.msproject.searchaed.R
 
-class FirstFragment() : Fragment() {
+class AedFirstFragment() : Fragment() {
 
     companion object {
-        fun newInstance() = FirstFragment()
+        fun newInstance() = AedFirstFragment()
     }
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class FirstFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_first, container, false)
+        val root = inflater.inflate(R.layout.aed_fragment_first, container, false)
         return root
     }
 }
