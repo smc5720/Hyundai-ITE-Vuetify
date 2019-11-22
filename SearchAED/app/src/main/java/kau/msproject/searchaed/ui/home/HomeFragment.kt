@@ -53,12 +53,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.home_fragment, container, false)
         //응급상황발생 버튼
-        val emergencyButton = root.findViewById<Button>(R.id.btn_emergency)
-        emergencyButton.setOnClickListener(){
-            val emergencyIntent = Intent(activity, EmergencyActivity::class.java)
-            emergencyIntent.putExtra("AED", infoOfAED[1])
-            startActivity(emergencyIntent)
-        }
 
         val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
         emergencyButton2.setOnClickListener(){
@@ -146,7 +140,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
         // 정보창의 내용을 지정한다.
-        val infoWindow = InfoWindow()
+        /*val infoWindow = InfoWindow()
         infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(MainActivity.applicationContext()) {
             override fun getText(infoWindow: InfoWindow): CharSequence {
                 var idx: Int = infoWindow.marker?.tag as Int
@@ -159,7 +153,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         "담당자 번호: ${dataOfAED[idx]!!.get("managerTel")}\n" +
                         "AED 모델: ${dataOfAED[idx]!!.get("model")}"
             }
-        }
+        }*/
 
         // 마커 클릭 시 호출되는 리스너
         val listener = Overlay.OnClickListener { overlay ->
@@ -172,40 +166,28 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             var cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(cameraLat, cameraLon), 15.0).animate(CameraAnimation.Easing, 500)
             naverMap.moveCamera(cameraUpdate)
 
-            if (marker.infoWindow == null) {
+            /*if (marker.infoWindow == null) {
                 // 현재 마커에 정보 창이 열려있지 않을 경우 엶
                 infoWindow.open(marker)
             } else {
                 // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
                 infoWindow.close()
-            }
+            }*/
 
             var idx: Int = marker.tag as Int
 
             var textBuildAddress : TextView = root.findViewById(R.id.textBuildAddress)
-            var textZipCode1 : TextView = root.findViewById(R.id.textZipcode1)
-            var textZipCode2 : TextView = root.findViewById(R.id.textZipcode2)
             var textOrg : TextView = root.findViewById(R.id.textOrg)
             var textClerkTel : TextView = root.findViewById(R.id.textClerkTel)
             var textBuildPlace : TextView = root.findViewById(R.id.textBuildPlace)
-            var textManager : TextView = root.findViewById(R.id.textManager)
             var textManagerTel : TextView = root.findViewById(R.id.textManagerTel)
-            var textModel : TextView = root.findViewById(R.id.textModel)
+
 
             textBuildAddress.text = infoOfAED[idx]!!.buildAddress
-            textZipCode1.text = infoOfAED[idx]!!.zipCode1
-            textZipCode2.text = infoOfAED[idx]!!.zipCode2
             textOrg.text = infoOfAED[idx]!!.org
             textClerkTel.text = infoOfAED[idx]!!.clerkTel
             textBuildPlace.text = infoOfAED[idx]!!.buildPlace
-            textManager.text = infoOfAED[idx]!!.manager
             textManagerTel.text = infoOfAED[idx]!!.managerTel
-            textModel.text = infoOfAED[idx]!!.model
-
-            /*val aedIntent = Intent(activity, AedInfoActivity::class.java)
-            aedIntent.putExtra("AED", infoOfAED[idx])
-            //클릭해야 idx가 생성이기 때문에 null발생 불가
-            startActivityForResult(aedIntent,1)*/ //액티비티로 넘기지 않고 밑에 화면으로 불러올것임.(팝업으로 띄우는거 삭제해야함)
 
             true
         }
@@ -243,7 +225,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
 
             // 맵을 클릭하면 정보창을 닫는다.
-            infoWindow.close()
+            //infoWindow.close()
         }
     }
 
