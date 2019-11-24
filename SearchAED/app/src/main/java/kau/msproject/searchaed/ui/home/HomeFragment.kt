@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceId
 
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -222,6 +223,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             naverMap.addOnLocationChangeListener { location ->
                 Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}",
                     Toast.LENGTH_SHORT).show()
+
+                var tokenID : String?= FirebaseInstanceId.getInstance().getToken()
+
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("user")
+                if(tokenID!= null) {
+                    myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
+                }
             }
 
             // 맵을 클릭하면 정보창을 닫는다.

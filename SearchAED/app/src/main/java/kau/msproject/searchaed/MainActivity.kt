@@ -53,9 +53,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //데이터베이스 메세지 저장
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("현재위치")
-        myRef.setValue("민철이집입니당")
+    //   FcmPush.instance.sendMessage("fSEyQCd2zCk:APA91bGdd_DoYdNe3CT_4_poT0X_Fp8Go8ozRhK-yETGBm274M7UiD9u0CiyACEqb9bWtVpnJYB4uy4qA0A9VqKIE5KLwghmMbB2wGFWO2eoktTGlA_qvgYArLYcaGUTENgR_5C6id4g","hi","bye")
+        FcmPush.instance.send()
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
