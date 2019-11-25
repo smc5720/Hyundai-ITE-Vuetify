@@ -40,6 +40,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     var checkState: Boolean = false
 
+    // 토큰 값
+    val tokenID : String?= FirebaseInstanceId.getInstance().getToken()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +50,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     ): View? {
 
         setRealtimeDatabase()
+
+        getLocationToken()
 
         callMapAPI()
 
@@ -68,13 +73,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun setRealtimeDatabase() {
-        // Realtime-Database에 message 태그 생성 후 "Hello, World!" 추가
         var database: FirebaseDatabase = FirebaseDatabase.getInstance()
         var databaseReference: DatabaseReference = database.getReference("records")
-        // databaseReference.setValue("Hello, World!")
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val value = dataSnapshot.value as ArrayList<String>
+                //Toast.makeText(MainActivity.applicationContext(), dataSnapshot.value.toString(), Toast.LENGTH_LONG).show()
 
                 for (i in 0 until dataNum) {
                     dataOfAED[i] = value.get(i) as Map<String, Object>
@@ -90,6 +94,30 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         )
                 }
                 // 정보를 위의 반복문에서 넣기 때문에 Null로 연산될 일이 없다.
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("ERROR", "Failed to read value.", error.toException())
+            }
+        })
+    }
+
+    // Firebase에 저장된 Token: 위도, 경도 값을 읽어온다.
+    // fb는 firebase의 약자이며, fb_lat과 fb_lon에는 각각 firebase에서 읽어온 위도와 경도 값이 저장된다.
+    // tokenData 변수를 선언할 때, value.get 부분의 tokenID에 찾고자 하는 클라이언트의 token 값을 넣어주면 된다.
+    fun getLocationToken() {
+        var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        var databaseReference: DatabaseReference = database.getReference("user")
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val value = dataSnapshot.value as Map<String, Object>
+                val tokenData = value.get(tokenID.toString()) as Map<String, Object>
+
+                val fb_lat = tokenData.get("lat")
+                val fb_lon = tokenData.get("lon")
+
+                Toast.makeText(MainActivity.applicationContext(), "lat: ${fb_lat}, lon: ${fb_lon}", Toast.LENGTH_LONG).show()
+                //Toast.makeText(MainActivity.applicationContext(), tokenData.toString(), Toast.LENGTH_LONG).show()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -224,12 +252,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}",
                     Toast.LENGTH_SHORT).show()
 
-                var tokenID : String?= FirebaseInstanceId.getInstance().getToken()
-
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.getReference("user")
                 if(tokenID!= null) {
-                    myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
+                    //myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
+                    myRef.child(tokenID).child("lat").setValue(location.latitude)
+                    myRef.child(tokenID).child("lon").setValue(location.longitude)
                 }
             }
 
