@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
+import com.google.firebase.database.snapshot.ChildKey
 import com.google.firebase.iid.FirebaseInstanceId
 
 import com.naver.maps.geometry.LatLng
@@ -51,8 +52,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         setRealtimeDatabase()
 
-        getLocationToken()
-
         callMapAPI()
 
         homeViewModel =
@@ -60,8 +59,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         root = inflater.inflate(R.layout.home_fragment, container, false)
         //응급상황발생 버튼
 
-        val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
-        emergencyButton2.setOnClickListener(){
+           val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
+           emergencyButton2.setOnClickListener(){
             val emergencyIntent = Intent(activity,EmergencyActivity2::class.java)
             emergencyIntent.putExtra("AED", infoOfAED[1])
             startActivity(emergencyIntent)
@@ -105,7 +104,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     // Firebase에 저장된 Token: 위도, 경도 값을 읽어온다.
     // fb는 firebase의 약자이며, fb_lat과 fb_lon에는 각각 firebase에서 읽어온 위도와 경도 값이 저장된다.
     // tokenData 변수를 선언할 때, value.get 부분의 tokenID에 찾고자 하는 클라이언트의 token 값을 넣어주면 된다.
-    fun getLocationToken() {
+    fun getLocationToken( my_lat : Double,my_lon : Double) {
         var database: FirebaseDatabase = FirebaseDatabase.getInstance()
         var databaseReference: DatabaseReference = database.getReference("user")
         databaseReference.addValueEventListener(object : ValueEventListener {
@@ -113,13 +112,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 val value = dataSnapshot.value as Map<String, Object>
                 val tokenData = value.get(tokenID.toString()) as Map<String, Object>
 
-                val fb_lat = tokenData.get("lat")
-                val fb_lon = tokenData.get("lon")
-
-                Toast.makeText(MainActivity.applicationContext(), "lat: ${fb_lat}, lon: ${fb_lon}", Toast.LENGTH_LONG).show()
-                //Toast.makeText(MainActivity.applicationContext(), tokenData.toString(), Toast.LENGTH_LONG).show()
+                var my_lat1 = tokenData.get("lat")
+                var my_lon1 = tokenData.get("lon")
+                Toast.makeText(MainActivity.applicationContext(), "lat: ${my_lat}, lon: ${my_lon}", Toast.LENGTH_LONG).show()
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.w("ERROR", "Failed to read value.", error.toException())
             }
@@ -249,20 +245,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             // 위치가 변경될 때마다 호출된다.
             naverMap.addOnLocationChangeListener { location ->
-                Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}",
-                    Toast.LENGTH_SHORT).show()
+             //   Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
 
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.getReference("user")
-                if(tokenID!= null) {
+                if (tokenID != null) {
                     //myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
                     myRef.child(tokenID).child("lat").setValue(location.latitude)
                     myRef.child(tokenID).child("lon").setValue(location.longitude)
+                    var lati = location.latitude
+                    var longi = location.longitude
                 }
             }
-
-            // 맵을 클릭하면 정보창을 닫는다.
-            //infoWindow.close()
         }
     }
 
