@@ -7,6 +7,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -22,6 +23,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.d(TAG, "new Token: $token")
 
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("user")
+        if (token != null) {
+            //myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
+            myRef.child(token).child("lat").setValue(1.0)
+            myRef.child(token).child("lon").setValue(1.0)
+        }
     }
 
     /**

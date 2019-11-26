@@ -1,6 +1,10 @@
 package kau.msproject.searchaed.ui.home
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +15,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.database.*
 import com.google.firebase.database.snapshot.ChildKey
 import com.google.firebase.iid.FirebaseInstanceId
@@ -28,7 +35,14 @@ import kau.msproject.searchaed.R
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     val dataNum:Int = 100;
+    private val REQUEST_CALL: Int = 1
+    /*init {
+        instance = this
+    }*/
 
+    fun applicationContext(): Context {
+        return MainActivity.applicationContext()
+    }
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
     private lateinit var root : View
@@ -58,9 +72,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.home_fragment, container, false)
         //응급상황발생 버튼
-
            val emergencyButton2 = root.findViewById<Button>(R.id.btn_emergency2)
-           emergencyButton2.setOnClickListener(){
+           emergencyButton2.setOnClickListener(
+
+           ){
             val emergencyIntent = Intent(activity,EmergencyActivity2::class.java)
             emergencyIntent.putExtra("AED", infoOfAED[1])
             startActivity(emergencyIntent)
@@ -104,23 +119,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     // Firebase에 저장된 Token: 위도, 경도 값을 읽어온다.
     // fb는 firebase의 약자이며, fb_lat과 fb_lon에는 각각 firebase에서 읽어온 위도와 경도 값이 저장된다.
     // tokenData 변수를 선언할 때, value.get 부분의 tokenID에 찾고자 하는 클라이언트의 token 값을 넣어주면 된다.
-    fun getLocationToken( my_lat : Double,my_lon : Double) {
-        var database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        var databaseReference: DatabaseReference = database.getReference("user")
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.value as Map<String, Object>
-                val tokenData = value.get(tokenID.toString()) as Map<String, Object>
 
-                var my_lat1 = tokenData.get("lat")
-                var my_lon1 = tokenData.get("lon")
-                Toast.makeText(MainActivity.applicationContext(), "lat: ${my_lat}, lon: ${my_lon}", Toast.LENGTH_LONG).show()
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("ERROR", "Failed to read value.", error.toException())
-            }
-        })
-    }
 
     fun callMapAPI() {
         val fm = childFragmentManager
@@ -213,7 +212,42 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             textClerkTel.text = infoOfAED[idx]!!.clerkTel
             textBuildPlace.text = infoOfAED[idx]!!.buildPlace
             textManagerTel.text = infoOfAED[idx]!!.managerTel
+            val mgr_call_btn =root.findViewById<Button>(R.id.btn_call_manager)
+            mgr_call_btn.setOnClickListener(){
+                val itentCall : Intent = Intent(Intent.ACTION_CALL)
+                val phoneNo: String = textManagerTel.text.toString() //건물번호
+                Toast.makeText(MainActivity.applicationContext(),"Please Enter Your Number123",Toast.LENGTH_SHORT)
+                if(phoneNo.trim().isEmpty()){
+                    Toast.makeText(MainActivity.applicationContext(),"Please Enter Your Number",Toast.LENGTH_SHORT)
+                }else{
+                    itentCall.setData(Uri.parse("tel:" + phoneNo))
+                }
+                if(ActivityCompat.checkSelfPermission(MainActivity.applicationContext(),Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(MainActivity.applicationContext(),"Please Grant Permission",Toast.LENGTH_SHORT)
+                    requestionPermission()
 
+                }else{
+                    startActivity(itentCall)
+                }
+            }
+            val place_call_btn = root.findViewById<Button>(R.id.btn_call_place)
+            place_call_btn.setOnClickListener(){
+                val itentCall : Intent = Intent(Intent.ACTION_CALL)
+                val phoneNo: String = textClerkTel.text.toString() //건물번호
+                Toast.makeText(MainActivity.applicationContext(),"Please Enter Your Number123",Toast.LENGTH_SHORT)
+                if(phoneNo.trim().isEmpty()){
+                    Toast.makeText(MainActivity.applicationContext(),"Please Enter Your Number",Toast.LENGTH_SHORT)
+                }else{
+                    itentCall.setData(Uri.parse("tel:" + phoneNo))
+                }
+                if(ActivityCompat.checkSelfPermission(MainActivity.applicationContext(),Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(MainActivity.applicationContext(),"Please Grant Permission",Toast.LENGTH_SHORT)
+                    requestionPermission()
+
+                }else{
+                    startActivity(itentCall)
+                }
+            }
             true
         }
 
@@ -245,7 +279,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             // 위치가 변경될 때마다 호출된다.
             naverMap.addOnLocationChangeListener { location ->
-             //   Toast.makeText(MainActivity.applicationContext(), "${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
 
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.getReference("user")
@@ -253,8 +286,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     //myRef.child(tokenID).setValue("${location.latitude}, ${location.longitude}")
                     myRef.child(tokenID).child("lat").setValue(location.latitude)
                     myRef.child(tokenID).child("lon").setValue(location.longitude)
-                    var lati = location.latitude
-                    var longi = location.longitude
                 }
             }
         }
@@ -264,5 +295,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
+    fun requestionPermission() {
+        // ActivityCompat.requestPermissions(MainActivity(), arrayOf(Manifest.permission.CALL_PHONE),REQUEST_CALL)
+        if (ContextCompat.checkSelfPermission(
+                MainActivity.applicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.CALL_PHONE),
+                REQUEST_CALL
+            )
+
+        }
+    }
 
 }

@@ -16,9 +16,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.ui.AppBarConfiguration
 import kau.msproject.searchaed.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //데이터베이스 메세지 저장
-    //   FcmPush.instance.sendMessage("fSEyQCd2zCk:APA91bGdd_DoYdNe3CT_4_poT0X_Fp8Go8ozRhK-yETGBm274M7UiD9u0CiyACEqb9bWtVpnJYB4uy4qA0A9VqKIE5KLwghmMbB2wGFWO2eoktTGlA_qvgYArLYcaGUTENgR_5C6id4g","hi","bye")
-        FcmPush.instance.send()
+       FcmPush.instance.send()
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
