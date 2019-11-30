@@ -54,38 +54,47 @@ class FcmPush() {
                 mylat = my_lat.toString().toDouble()
                 mylon = my_lon.toString().toDouble()
                 println("지나감 : mylat : ${mylat} , ${my_lat}")
-
-
                 println("지나감 : ${mylat} ")
                 val database = FirebaseDatabase.getInstance()
                 val mRef = database.getReference("user")
                 mRef.orderByChild("lat").startAt(mylat - 1).endAt(mylat+1)
                     .addChildEventListener(object : ChildEventListener {
                         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+
                              mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
                                 override fun onChildAdded(datasnap: DataSnapshot, Push_token: String?) {
 
-                                    println("토큰값 : "+Push_token)
-                                    var token = Push_token
-                                    var pushDTO= PushDTO()
-                                    pushDTO.to = token
-                                    pushDTO.notification.title ="위급상황입니다"
-                                    pushDTO.notification.body = "위도 : ${mylat}, 경도 : ${mylon}로 AED를 가지고와 주세요"
-                                    var body =okhttp3.RequestBody.create(JSON,gson?.toJson(pushDTO))
-                                    var request = okhttp3.Request.Builder()
-                                        .addHeader("Content-Type","application/json")
-                                        .addHeader("Authorization","key=AIzaSyDiQMKmWLGIYvJKr0yi5s16j1MQqsKO0D8")
-                                        .url(url)
-                                        .post(body)
-                                        .build()
-                                    okHttpClient?.newCall(request)?.enqueue(object : Callback{
-                                        override fun onFailure(call: Call, e: IOException) {
+                                        var token = Push_token
+                                        var pushDTO = PushDTO()
+                                        pushDTO.to = token
+                                        pushDTO.notification.title = "위급상황입니다"
+                                        pushDTO.notification.body =
+                                            "위도 : ${mylat}, 경도 : ${mylon}로 AED를 가지고와 주세요"
+                                        var body =
+                                            okhttp3.RequestBody.create(JSON, gson?.toJson(pushDTO))
+                                        var request = okhttp3.Request.Builder()
+                                            .addHeader("Content-Type", "application/json")
+                                            .addHeader(
+                                                "Authorization",
+                                                "key=AIzaSyDiQMKmWLGIYvJKr0yi5s16j1MQqsKO0D8"
+                                            )
+                                            .url(url)
+                                            .post(body)
+                                            .build()
+                                        okHttpClient?.newCall(request)?.enqueue(object : Callback {
+                                            override fun onFailure(call: Call, e: IOException) {
 
-                                        }
-                                        override fun onResponse(call: Call, response: Response) {
-                                            println(response?.body()?.string())
-                                        }
-                                    })
+                                            }
+
+                                            override fun onResponse(
+                                                call: Call,
+                                                response: Response
+                                            ) {
+                                                println(response?.body()?.string())
+                                            }
+                                        })
+
+
                                 }
 
                                 override fun onCancelled(p0: DatabaseError) {
@@ -103,6 +112,7 @@ class FcmPush() {
                                 override fun onChildRemoved(p0: DataSnapshot) {
                                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                                 }
+
                             })
                         }
 
