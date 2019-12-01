@@ -48,23 +48,19 @@ class FcmPush() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val value = dataSnapshot.value as Map<String, Object>
                 val tokenData = value.get(tokenID.toString()) as Map<String, Object>
-
                 var my_lat = tokenData.get("lat")
                 var my_lon = tokenData.get("lon")
                 mylat = my_lat.toString().toDouble()
                 mylon = my_lon.toString().toDouble()
-                println("지나감 : mylat : ${mylat} , ${my_lat}")
-                println("지나감 : ${mylat} ")
                 val database = FirebaseDatabase.getInstance()
                 val mRef = database.getReference("user")
+                var count1 : Int=0
                 mRef.orderByChild("lat").startAt(mylat - 1).endAt(mylat+1)
                     .addChildEventListener(object : ChildEventListener {
                         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-
-                             mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
+                              mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
                                 override fun onChildAdded(datasnap: DataSnapshot, Push_token: String?) {
-
-                                        var token = Push_token
+                                    var token = Push_token
                                         var pushDTO = PushDTO()
                                         pushDTO.to = token
                                         pushDTO.notification.title = "위급상황입니다"
@@ -95,6 +91,7 @@ class FcmPush() {
                                         })
 
 
+
                                 }
 
                                 override fun onCancelled(p0: DatabaseError) {
@@ -114,6 +111,7 @@ class FcmPush() {
                                 }
 
                             })
+
                         }
 
                         override fun onCancelled(p0: DatabaseError) {

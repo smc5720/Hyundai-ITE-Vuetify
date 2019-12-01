@@ -52,11 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-
         //데이터베이스 메세지 저장
-       FcmPush.instance.send()
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
@@ -68,25 +65,6 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        //문자버튼
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            val phoneNo: String = "01063385720" //119번호
-            val sms: String = "현재 ___위치에 긴급 환자가 발생 했습니다. 도움 요청 부탁드립니다!!"   //문자내용
-            try {
-                var smsManager = SmsManager.getDefault()
-                smsManager.sendTextMessage(phoneNo, null, sms, null, null)
-                val context: Context = MainActivity.applicationContext()
-                Toast.makeText(context, "전송 완료!", Toast.LENGTH_LONG).show()
-            } catch (e: Exception) {
-                val context: Context = MainActivity.applicationContext()
-                Toast.makeText(context, "SMS faild, please try again later!", Toast.LENGTH_LONG)
-                    .show()
-                e.printStackTrace()
-            }
-        }
         //전화버튼
         /*val buttonCall = findViewById<Button>(R.id.buttonCall)
         buttonCall.setOnClickListener {
