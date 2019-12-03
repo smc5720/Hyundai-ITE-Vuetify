@@ -40,7 +40,7 @@ class FcmPush() {
     fun send() {
         var mylat: Double = 0.0
         var mylon: Double = 0.0
-
+        var arr = ArrayList<String>()
      //   storeDatabase(tokenID, 37.0, 126.0)
         var database1: FirebaseDatabase = FirebaseDatabase.getInstance()
         var databaseReference: DatabaseReference = database1.getReference("user")
@@ -50,6 +50,7 @@ class FcmPush() {
                 val tokenData = value.get(tokenID.toString()) as Map<String, Object>
                 var my_lat = tokenData.get("lat")
                 var my_lon = tokenData.get("lon")
+
                 mylat = my_lat.toString().toDouble()
                 mylon = my_lon.toString().toDouble()
                 val database = FirebaseDatabase.getInstance()
@@ -58,60 +59,7 @@ class FcmPush() {
                 mRef.orderByChild("lat").startAt(mylat - 1).endAt(mylat+1)
                     .addChildEventListener(object : ChildEventListener {
                         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                              mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
-                                override fun onChildAdded(datasnap: DataSnapshot, Push_token: String?) {
-                                    var token = Push_token
-                                        var pushDTO = PushDTO()
-                                        pushDTO.to = token
-                                        pushDTO.notification.title = "위급상황입니다"
-                                        pushDTO.notification.body =
-                                            "위도 : ${mylat}, 경도 : ${mylon}로 AED를 가지고와 주세요"
-                                        var body =
-                                            okhttp3.RequestBody.create(JSON, gson?.toJson(pushDTO))
-                                        var request = okhttp3.Request.Builder()
-                                            .addHeader("Content-Type", "application/json")
-                                            .addHeader(
-                                                "Authorization",
-                                                "key=AIzaSyDiQMKmWLGIYvJKr0yi5s16j1MQqsKO0D8"
-                                            )
-                                            .url(url)
-                                            .post(body)
-                                            .build()
-                                        okHttpClient?.newCall(request)?.enqueue(object : Callback {
-                                            override fun onFailure(call: Call, e: IOException) {
-
-                                            }
-
-                                            override fun onResponse(
-                                                call: Call,
-                                                response: Response
-                                            ) {
-                                                println(response?.body()?.string())
-                                            }
-                                        })
-
-
-
-                                }
-
-                                override fun onCancelled(p0: DatabaseError) {
-                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                }
-
-                                override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                }
-
-                                override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                }
-
-                                override fun onChildRemoved(p0: DataSnapshot) {
-                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                }
-
-                            })
-
+                            if(p1!=null) arr.add(p1)
                         }
 
                         override fun onCancelled(p0: DatabaseError) {
@@ -130,6 +78,66 @@ class FcmPush() {
                             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
                     })
+                mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
+                    override fun onChildAdded(datasnap: DataSnapshot, Push_token: String?) {
+
+                        for(i in 0 until arr.size-1){
+                            if(arr.get(i)==Push_token){
+                                var token = Push_token
+                                var pushDTO = PushDTO()
+                                pushDTO.to = token
+                                pushDTO.notification.title = "위급상황입니다"
+                                pushDTO.notification.body =
+                                    "위도 : ${mylat}, 경도 : ${mylon}로 AED를 가지고와 주세요"
+                                var body =
+                                    okhttp3.RequestBody.create(JSON, gson?.toJson(pushDTO))
+                                var request = okhttp3.Request.Builder()
+                                    .addHeader("Content-Type", "application/json")
+                                    .addHeader(
+                                        "Authorization",
+                                        "key=AIzaSyDiQMKmWLGIYvJKr0yi5s16j1MQqsKO0D8"
+                                    )
+                                    .url(url)
+                                    .post(body)
+                                    .build()
+                                okHttpClient?.newCall(request)?.enqueue(object : Callback {
+                                    override fun onFailure(call: Call, e: IOException) {
+
+                                    }
+
+                                    override fun onResponse(
+                                        call: Call,
+                                        response: Response
+                                    ) {
+                                        println(response?.body()?.string())
+                                    }
+                                })
+                            }
+
+                        }
+
+
+
+
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onChildRemoved(p0: DataSnapshot) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
