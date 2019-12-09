@@ -39,8 +39,7 @@ class EmergencyActivity2 : AppCompatActivity() {
                 frCount++
             }else if(frCount == 1){
                 replaceFragment(ThirdFragment.newInstance())
-                 //   Snackbar.make( view, "Replace with your own action", Snackbar.LENGTH_LONG)
-               //         .setAction("Action", null).show()
+                //문자발송
                     val phoneNo: String = "123456789" //119번호
                     val sms: String = "현재 ___위치에 긴급 환자가 발생 했습니다. 도움 요청 부탁드립니다!!"   //문자내용
                     try {

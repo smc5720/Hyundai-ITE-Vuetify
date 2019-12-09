@@ -39,10 +39,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     /*init {
         instance = this
     }*/
-
+/*
     fun applicationContext(): Context {
         return MainActivity.applicationContext()
-    }
+    }*/
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var locationSource: FusedLocationSource
     private lateinit var root : View
@@ -212,6 +212,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             textClerkTel.text = infoOfAED[idx]!!.clerkTel
             textBuildPlace.text = infoOfAED[idx]!!.buildPlace
             textManagerTel.text = infoOfAED[idx]!!.managerTel
+            //매니저에게 전화
             val mgr_call_btn =root.findViewById<Button>(R.id.btn_call_manager)
             mgr_call_btn.setOnClickListener(){
                 val itentCall : Intent = Intent(Intent.ACTION_CALL)
@@ -230,6 +231,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     startActivity(itentCall)
                 }
             }
+            //건물관리자에게 전화
             val place_call_btn = root.findViewById<Button>(R.id.btn_call_place)
             place_call_btn.setOnClickListener(){
                 val itentCall : Intent = Intent(Intent.ACTION_CALL)
@@ -279,7 +281,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             // 위치가 변경될 때마다 호출된다.
             naverMap.addOnLocationChangeListener { location ->
-
+                //위치가 변경될 때마다 데이터베이스에 위도 경도 실시간 저장
                 val database = FirebaseDatabase.getInstance()
                 val myRef = database.getReference("user")
                 if (tokenID != null) {

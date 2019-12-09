@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-
+//FCM service
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = "FirebaseService"
@@ -19,6 +19,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * FirebaseInstanceIdService is deprecated.
      * this is new on firebase-messaging:17.1.0
      */
+    //새로운 토큰이 생길경우 데이터베이스에 저장
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "new Token: $token")

@@ -48,41 +48,23 @@ class MainActivity : AppCompatActivity() {
             return instance!!.applicationContext
         }
     }
-    //val dataOfAED = arrayOfNulls<Map<String, Object>>(100)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //데이터베이스 메세지 저장
+     /*
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS),
             PackageManager.PERMISSION_GRANTED
-        )
+        )*/
 
         NaverMapSdk.getInstance(this).client =
             NaverMapSdk.NaverCloudPlatformClient("hz815ddbrf")
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        //전화버튼
-        /*val buttonCall = findViewById<Button>(R.id.buttonCall)
-        buttonCall.setOnClickListener {
-            val itentCall : Intent = Intent(Intent.ACTION_CALL)
-            val phoneNo: String = "01063385720" //건물번호
-            Toast.makeText(this,"Please Enter Your Number123",Toast.LENGTH_SHORT)
-            if(phoneNo.trim().isEmpty()){
-                Toast.makeText(this,"Please Enter Your Number",Toast.LENGTH_SHORT)
-            }else{
-                itentCall.setData(Uri.parse("tel:" + phoneNo))
-            }
-            if(ActivityCompat.checkSelfPermission(applicationContext,Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this,"Please Grant Permission",Toast.LENGTH_SHORT)
-                requestionPermission()
-            }else{
-                startActivity(itentCall)
-            }
-        }*/
+
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -96,10 +78,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    //전화
-    fun requestionPermission(){
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE),REQUEST_CALL)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -17,7 +17,7 @@ import kau.msproject.searchaed.ui.PushDTO
 import kau.msproject.searchaed.ui.home.HomeFragment
 import okhttp3.*
 import java.io.IOException
-
+//알림 보내기
 class FcmPush() {
     var JSON = MediaType.parse("application/json; charset=utf-8")
     var url = "https://fcm.googleapis.com/fcm/send"
@@ -36,7 +36,7 @@ class FcmPush() {
         gson = Gson()
         okHttpClient = OkHttpClient()
     }
-
+    //알림 클라이언트->클라이언트로 보내는 함수
     fun send() {
         var mylat: Double = 0.0
         var mylon: Double = 0.0
@@ -50,12 +50,13 @@ class FcmPush() {
                 val tokenData = value.get(tokenID.toString()) as Map<String, Object>
                 var my_lat = tokenData.get("lat")
                 var my_lon = tokenData.get("lon")
-
+                
                 mylat = my_lat.toString().toDouble()
                 mylon = my_lon.toString().toDouble()
+                //데이터베이스에서 자기 위치 정보를 가져옴
                 val database = FirebaseDatabase.getInstance()
                 val mRef = database.getReference("user")
-                var count1 : Int=0
+                //데이터베이스에서 자기위도값 근처에 있는 사람들의 토큰값을 가져와서 arraylist에 저장함
                 mRef.orderByChild("lat").startAt(mylat - 1).endAt(mylat+1)
                     .addChildEventListener(object : ChildEventListener {
                         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
@@ -78,6 +79,7 @@ class FcmPush() {
                             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
                     })
+                //데이터베이스에서 자기경도값 근처에 있는 사람들의 토큰값을 가져 온 후 위도값이 저장되어있는 arraylist와 비교하여 일치하면 알림 푸시
                 mRef.orderByChild("lon").startAt(mylon-1).endAt(mylon+1).addChildEventListener(object : ChildEventListener{
                     override fun onChildAdded(datasnap: DataSnapshot, Push_token: String?) {
 
