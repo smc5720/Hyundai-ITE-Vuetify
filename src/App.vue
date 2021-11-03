@@ -31,7 +31,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="secondary" dark>
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Collapsing Bar</v-toolbar-title>
     </v-app-bar>
 
