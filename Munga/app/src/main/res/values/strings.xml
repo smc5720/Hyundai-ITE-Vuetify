@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Munga</string>
-    <string name="Phonenum">수신 전화번호</string>
-    <string name="buoonSend">보내기</string>
-    <string name="textViewSMS">메세지를 입력하세요.</string>
-</resources>
