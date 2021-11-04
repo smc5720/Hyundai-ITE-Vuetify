@@ -27,6 +27,35 @@
             <v-list-item-title>About</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-group value="true" prepend-icon="mdi-palette-outline" active-class="white--text">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Styles</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item to="/styles/textandtypography" color="white">
+            <v-list-item-icon></v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Text and Typography</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item to="/styles/spacing" color="white">
+            <v-list-item-icon></v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Margin and Padding</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-item to="/gridsystem">
+          <v-list-item-icon> <v-icon>mdi-view-grid-outline</v-icon></v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Grid System</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -55,7 +84,7 @@ export default {
   components: {},
   // 컴포넌트 데이터 정의
   data: function () {
-    return { drawer: false };
+    return { drawer: true };
   },
   // 컴포넌트 메소드 정의
   methods: {},

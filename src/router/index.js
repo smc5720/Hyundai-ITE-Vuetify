@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import gridsystem from "./gridsystem";
+import styles from "./styles";
 
 Vue.use(VueRouter);
 
@@ -15,6 +17,8 @@ const routes = [
     name: "About",
     component: () => import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  ...styles,
+  ...gridsystem,
 ];
 
 const router = new VueRouter({
