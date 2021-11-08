@@ -28,7 +28,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-group value="true" prepend-icon="mdi-palette-outline" active-class="white--text">
+        <v-list-group prepend-icon="mdi-palette-outline" active-class="white--text">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Styles</v-list-item-title>
@@ -84,7 +84,7 @@ export default {
   components: {},
   // 컴포넌트 데이터 정의
   data: function () {
-    return { drawer: true };
+    return { drawer: false };
   },
   // 컴포넌트 메소드 정의
   methods: {},
